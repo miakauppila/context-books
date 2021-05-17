@@ -1,16 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
-
 export const bookReducer = (state, action) => {
   switch (action.type) {
+    case 'INIT_BOOKS':
+    return action.payload
     case "ADD_BOOK":
       return [
         ...state,
-        {
-          title: action.book.title,
-          author: action.book.author,
-          notes: action.book.notes,
-          id: uuidv4(),
-        },
+        action.payload,
       ];
     case "REMOVE_BOOK":
       return state.filter((book) => book.id !== action.id);
@@ -19,13 +14,19 @@ export const bookReducer = (state, action) => {
   }
 };
 
-export const newBookAction = (title, author, notes) => {
+export const initializeBooksAction = (books) => {
+  return {
+    type: 'INIT_BOOKS',
+    payload: books
+  }
+}
+
+export const newBookAction = (book, id) => {
   return {
     type: "ADD_BOOK",
-    book: {
-      title,
-      author,
-      notes
+    payload: {
+      id,
+      ...book
     },
   };
 }

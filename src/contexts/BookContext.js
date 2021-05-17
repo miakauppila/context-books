@@ -1,21 +1,25 @@
 import React, { createContext, useReducer, useEffect } from "react";
-import { bookReducer } from "../reducers/bookReducer";
+import { bookReducer, initializeBooksAction } from "../reducers/bookReducer";
+import bookService from "../services/books";
 
 export const BookContext = createContext();
 
 const BookContextProvider = (props) => {
-  
-  // this hook contains + updates the data
-  const [books, dispatch] = useReducer(bookReducer, [],  // 1st param reducer, 2nd initial state (empty array)
-    () => { // 3 rd (optional) param: fn to get data from local storage
-      const localData = localStorage.getItem("books");
-      return localData ? JSON.parse(localData) : [];
-    });
 
-  // run once
+  // the hook contains + updates the state
+  // 1st param reducer, 2nd initial state (empty array)
+  const [books, dispatch] = useReducer(bookReducer, []);  
+  
+  console.log("books", books);
+
+  // runs once
   useEffect(() => {
-    localStorage.setItem("books", JSON.stringify(books));
-  }, [books]);
+    bookService.getAll().then(data =>
+      dispatch(initializeBooksAction(data))
+    )
+  }, [])
+
+
   return (
     <BookContext.Provider value={{ books, dispatch }}>
       {props.children}

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { BookContext } from "../contexts/BookContext";
 import  { useField } from '../hooks'
 import { newBookAction } from "../reducers/bookReducer";
+import bookService from "../services/books";
 
 const AddBookForm = () => {
 
@@ -14,10 +15,22 @@ const AddBookForm = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(newBookAction(title.value, author.value, notes.value));
+    const newBook = {
+      title: title.value,
+      author: author.value,
+      notes: notes.value
+    }
     title.onReset();
     author.onReset();
     notes.onReset();
+    bookService.create(newBook)
+      .then((bookId) => {
+        console.log("Created document:", bookId);
+        dispatch(newBookAction(newBook, bookId));
+      })
+      .catch((error) => {
+        console.log('Error writing to database', error);
+      }) 
   };
 
   return (

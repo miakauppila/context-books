@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { BookContext } from "../contexts/BookContext";
+import bookService from "../services/books";
 import { removeBookAction } from "../reducers/bookReducer";
 
 const BookDetails = ({ book }) => {
@@ -13,7 +14,15 @@ const BookDetails = ({ book }) => {
 
   const removeHandler = (book) => {
     if (window.confirm(`Do you want to remove the book ${book.title}?`)) {
-      dispatch(removeBookAction(book.id))
+      bookService.deleteBook(book.id)
+      .then(() => {
+        console.log("Deleted document.");
+        dispatch(removeBookAction(book.id))
+      })
+      .catch((error) => {
+        console.log('Error removing document:', error);
+      })
+      
     }
   }
 
