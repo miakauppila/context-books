@@ -1,6 +1,6 @@
-import React, { createContext, useReducer, useEffect } from "react";
-import { bookReducer, initializeBooksAction } from "../reducers/bookReducer";
-import bookService from "../services/books";
+import React, { createContext, useReducer, useEffect } from 'react';
+import { bookReducer, initializeBooksAction } from '../reducers/bookReducer';
+import bookService from '../services/books';
 
 export const BookContext = createContext();
 
@@ -8,16 +8,16 @@ const BookContextProvider = (props) => {
 
   // the hook contains + updates the state
   // 1st param reducer, 2nd initial state (empty array)
-  const [books, dispatch] = useReducer(bookReducer, []);  
-  
-  console.log("books", books);
+  const [books, dispatch] = useReducer(bookReducer, []);
+
+  console.log('books', books);
 
   // runs once
   useEffect(() => {
     bookService.getAll().then(data =>
       dispatch(initializeBooksAction(data))
-    )
-  }, [])
+    );
+  }, []);
 
 
   return (
