@@ -1,4 +1,7 @@
-import db from '../config/firebaseConfig';
+import firebase from '../config/firebaseConfig';
+
+// the database for all requests
+const db = firebase.firestore();
 
 //fetch data from firestore
 const getAll = async () => {

@@ -1,18 +1,20 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 // Web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: 'AIzaSyAaHvbtLAjac-CysIyY3KEU0seHoRhnSGo',
-  authDomain: 'react-book-list-369d2.firebaseapp.com',
-  projectId: 'react-book-list-369d2',
-  storageBucket: 'react-book-list-369d2.appspot.com',
-  messagingSenderId: '957274692264',
-  appId: '1:957274692264:web:8cc7b8b34fee082763409d'
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID
 };
   // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-// the database for all requests
-const db = firebase.firestore();
 
-export default db;
+
+//export const auth = firebase.auth();
+
+export default firebase;
