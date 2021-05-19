@@ -30,10 +30,11 @@ const BookDetails = ({ book }) => {
   return (
     <div>
       <li className="book-details">
-        <div className="remove" onClick={() => removeHandler(book)}>
-          <div className="title">{book.title}</div>
-          <div className="author">{book.author}</div>
+        <div className="title" onClick={() => removeHandler(book)}>
+          {book.title}
+          <i className="bi bi-trash float-right" style={{ fontSize: '2.2rem' }}></i>
         </div>
+        <div className="author">{book.author}</div>
         <div>
           <Button
             style={hideWhenNotesVisible}
