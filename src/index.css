@@ -15,17 +15,26 @@ body {
   max-width: 700px;
   color: #eee;
 }
-.navbar {
+.navBar {
   padding: 10px 20px;
   text-align: center;
   background: #6556a3;
 }
-.navbar h1 {
+.navBar h1 {
   margin: 10px 0;
 }
-
+.books {
+  padding-bottom: 15px;
+}
+h2 {
+  margin-top: 20px;
+  margin-left: 20px;
+}
 .book-list, .sort {
   margin: 20px;
+}
+.link {
+  padding: 20px;
 }
 .book-list ul {
   padding: 0;

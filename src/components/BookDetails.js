@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { BookContext } from '../contexts/BookContext';
 import bookService from '../services/books';
 import { removeBookAction } from '../reducers/bookReducer';
+import { Button } from 'react-bootstrap';
 
 const BookDetails = ({ book }) => {
   const { dispatch } = useContext(BookContext);
@@ -34,17 +35,24 @@ const BookDetails = ({ book }) => {
           <div className="author">{book.author}</div>
         </div>
         <div>
-          <button
+          <Button
             style={hideWhenNotesVisible}
-            type="button"
+            variant="light"
+            size="sm"
             id="show"
             onClick={() => setShowNotes(true)}
           >show notes
-          </button>
+          </Button>
         </div>
 
         <div style={showWhenNotesVisible} className="notes">{book.notes}
-          <button type="button" id="hide" onClick={() => setShowNotes(false)}>hide notes</button>
+          <Button
+            variant="light"
+            size="sm"
+            id="hide"
+            onClick={() => setShowNotes(false)}
+          >hide notes
+          </Button>
         </div>
       </li>
     </div>

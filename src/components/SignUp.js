@@ -1,0 +1,77 @@
+import React, { useState } from 'react';
+//import { setLoggedUserAction } from '../reducers/authReducer';
+import { Form, Button, Alert } from 'react-bootstrap';
+import { useAuth } from '../contexts/AuthContext';
+import { useHistory, Link } from 'react-router-dom';
+
+const SignUp = () => {
+  const { signup } = useAuth();
+  const [error, setError] = useState('');
+  // button will be disabled while loading
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    const passwordConfirm = event.target.passwordConfirm.value;
+    if (password !== passwordConfirm) {
+      setError('Passwords do not match, please check them!');
+      setTimeout(() => {
+        setError('');
+      }, 5000);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await signup(email, password);
+      history.push('/');
+    } catch(error) {
+      console.log(error);
+      setError(`Failed to create an account: ${error.message}`);
+      setTimeout(() => {
+        setError('');
+      }, 5000);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="container">
+      <h2>Create an account</h2>
+      {error && <Alert variant="danger">{error}</Alert>}
+      <Form id="login" onSubmit={handleLogin}>
+        <Form.Group controlId="email">
+          <Form.Label>Email:</Form.Label>
+          <Form.Control type="email"
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Password:</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="min. 6 characters"
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="passwordConfirm">
+          <Form.Label>Password confirmation:</Form.Label>
+          <Form.Control
+            type="password"
+            required
+          />
+        </Form.Group>
+        <Button disabled={loading} variant="primary" type="submit" id="login-button">Sign Up</Button>
+      </Form>
+      <div className="link mt-2">
+        Already have an account? <Link to="/login">Log In</Link>
+      </div>
+    </div>
+  );
+};
+
+export default SignUp;
+
