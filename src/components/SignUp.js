@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-//import { setLoggedUserAction } from '../reducers/authReducer';
+import React, { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { useHistory, Link } from 'react-router-dom';
+import { NotificationContext } from '../contexts/NotificationContext';
+import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const SignUp = () => {
   const { signup } = useAuth();
   const [error, setError] = useState('');
-  // button will be disabled while loading
+  // button will be disabled while authenticating
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const { dispatchNotification } = useContext(NotificationContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -28,14 +30,18 @@ const SignUp = () => {
       setLoading(true);
       await signup(email, password);
       history.push('/');
+      dispatchNotification(showAction(`Welcome ${email}!`, 'success'));
+      setTimeout(() => {
+        dispatchNotification(closeAction());
+      }, 5000);
     } catch(error) {
       console.log(error);
       setError(`Failed to create an account: ${error.message}`);
       setTimeout(() => {
         setError('');
       }, 5000);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

@@ -8,9 +8,11 @@ export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-const AuthProvider = (props) => {
+const AuthContextProvider = (props) => {
   const [loggedUser, setLoggedUser] = useState(null);
+
   console.log('user', loggedUser);
+  // loading until auth process ready
   const [loading, setLoading] = useState(true);
 
   const signup = (email, password) => {
@@ -28,8 +30,9 @@ const AuthProvider = (props) => {
   useEffect(() => {
     // listen for auth state changes
     const unsubscribe = auth.onAuthStateChanged(user => {
-      // sets to null on logout
+      // set received user or null on logout
       setLoggedUser(user);
+      // NB! must be done after setting the user
       setLoading(false);
     });
     //unsubscribe to the listener when component unmounts
@@ -50,4 +53,4 @@ const AuthProvider = (props) => {
   );
 };
 
-export default AuthProvider;
+export default AuthContextProvider;

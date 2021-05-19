@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
-//import { setLoggedUserAction } from '../reducers/authReducer';
+import React, { useState, useContext } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { useHistory, Link } from 'react-router-dom';
+import { NotificationContext } from '../contexts/NotificationContext';
+import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const LoginForm = () => {
   const { login } = useAuth();
   const [error, setError] = useState('');
+  // button will be disabled while authenticating
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const { dispatchNotification } = useContext(NotificationContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -18,15 +21,18 @@ const LoginForm = () => {
       setLoading(true);
       await login(email, password);
       history.push('/');
-      //dispatch(notificationAction('Welcome', 'success'));
+      dispatchNotification(showAction(`Welcome ${email}!`, 'success'));
+      setTimeout(() => {
+        dispatchNotification(closeAction());
+      }, 5000);
     } catch (error) {
       console.log(error);
-      setError('Failed to log in');
+      setError('Failed to log in.');
       setTimeout(() => {
         setError('');
       }, 5000);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

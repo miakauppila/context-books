@@ -2,16 +2,19 @@ import React, { useContext, useState } from 'react';
 import { BookContext } from '../contexts/BookContext';
 import BookDetails from './BookDetails';
 import { Link, useHistory } from 'react-router-dom';
-import { Button, Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
+import Notification from './Notification';
+import { NotificationContext } from '../contexts/NotificationContext';
+import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const BookList = () => {
   const { books } = useContext(BookContext);
   const { logout } = useAuth();
   const history = useHistory();
+  const { dispatchNotification } = useContext(NotificationContext);
 
   const [sortBy, setSortBy] = useState('title');
-  const [error, setError] = useState('');
 
   // sort books by sortBy asc
   books.sort((a, b) => {
@@ -28,14 +31,17 @@ const BookList = () => {
       history.push('/login');
     } catch(error) {
       console.log('error', error);
-      setError('Failed to log out.');
+      dispatchNotification(showAction('Failed to log out.', 'danger'));
+      setTimeout(() => {
+        dispatchNotification(closeAction());
+      }, 5000);
     }
   };
 
   return (
     <div className='books'>
-      {error && <Alert variant="danger">{error}</Alert>}
       <div className='sort'>
+        <Notification />
         <label>Sort By:</label>{' '}
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value='title'>Title</option>
