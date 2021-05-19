@@ -1,8 +1,10 @@
 # My Reading List  
 
-This React Context *practice* project was created with help of the Net Ninja Tutorial video.    
-- BookContext and bookReducer handle the application state
-- The books are saved in local storage  
+This React Context *practice* project was started with help of the Net Ninja Tutorial video. Afterwards I added some additional features, NoSQL database and authentication.  
+- BookContext and bookReducer handle the application state of books
+- I have implemented Firebase Firestore database for storing and retrieving book data  
+- Firebase is also used for authentication with email and password
+- AuthContext handles Firebase authentication requests and loggedUser state
 
 ***
 
