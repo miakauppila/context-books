@@ -27,6 +27,10 @@ const AuthContextProvider = (props) => {
     return auth.signOut();
   };
 
+  const resetPassword = (email) => {
+    return auth.sendPasswordResetEmail(email);
+  };
+
   useEffect(() => {
     // listen for auth state changes
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -44,6 +48,7 @@ const AuthContextProvider = (props) => {
     login,
     signup,
     logout,
+    resetPassword
   };
 
   return (

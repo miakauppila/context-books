@@ -10,6 +10,7 @@ import LoginForm from './components/LoginForm';
 import SignUp from './components/SignUp';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
+import ResetPassword from './components/ResetPassword';
 import NotFound from './components/NotFound';
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
                 <PrivateRoute path="/create" component={AddBookForm} />
                 <PublicRoute restricted={true} path="/login" component={LoginForm} />
                 <PublicRoute restricted={true} path="/signup" component={SignUp} />
-                {/* <Route path="/reset-password" component={ResetPassword} /> */}
+                <PublicRoute restricted={true} path="/reset-password" component={ResetPassword} />
                 <PublicRoute restricted={false} component={NotFound} />
               </Switch>
             </NotificationContextProvider>
