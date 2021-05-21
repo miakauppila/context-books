@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { BookContext } from '../contexts/BookContext';
+import { resetBooksAction } from '../reducers/bookReducer';
 import BookDetails from './BookDetails';
 import { Link, useHistory } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -9,7 +10,7 @@ import { NotificationContext } from '../contexts/NotificationContext';
 import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const BookList = () => {
-  const { books } = useContext(BookContext);
+  const { books, dispatch } = useContext(BookContext);
   const { loggedUser, logout } = useAuth();
   const history = useHistory();
   const { dispatchNotification } = useContext(NotificationContext);
@@ -28,9 +29,9 @@ const BookList = () => {
   const handleLogout = async () =>  {
     try {
       await logout();
-      // avoid leaks and refresh the page
       history.push('/login');
-      window.location.reload();
+      // reset bookReducer when switching users
+      dispatch(resetBooksAction());
     } catch(error) {
       console.log('error', error);
       dispatchNotification(showAction('Failed to log out.', 'danger'));

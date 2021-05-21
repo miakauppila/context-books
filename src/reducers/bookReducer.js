@@ -2,6 +2,8 @@ export const bookReducer = (state, action) => {
   switch (action.type) {
   case 'INIT_BOOKS':
     return action.payload;
+  case 'RESET_BOOKS':
+    return [];
   case 'ADD_BOOK':
     return [
       ...state,
@@ -35,5 +37,11 @@ export const removeBookAction = (id) => {
   return {
     type: 'REMOVE_BOOK',
     id
+  };
+};
+
+export const resetBooksAction = () => {
+  return {
+    type: 'RESET_BOOKS'
   };
 };
