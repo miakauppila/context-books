@@ -10,7 +10,7 @@ import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const BookList = () => {
   const { books } = useContext(BookContext);
-  const { logout } = useAuth();
+  const { loggedUser, logout } = useAuth();
   const history = useHistory();
   const { dispatchNotification } = useContext(NotificationContext);
 
@@ -28,7 +28,9 @@ const BookList = () => {
   const handleLogout = async () =>  {
     try {
       await logout();
+      // avoid leaks and refresh the page
       history.push('/login');
+      window.location.reload();
     } catch(error) {
       console.log('error', error);
       dispatchNotification(showAction('Failed to log out.', 'danger'));
@@ -63,7 +65,8 @@ const BookList = () => {
         <div className="empty">No books to read. A house without books is like a room without windows... </div>
       )}
       <div className="link">
-        <Button variant="outline-primary" onClick={handleLogout}>
+        User <b>{loggedUser.email}</b> logged in
+        <Button variant="link" className="ml-2 pb-2" onClick={handleLogout}>
           Log Out
         </Button>
       </div>

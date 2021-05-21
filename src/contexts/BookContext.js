@@ -1,6 +1,7 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { bookReducer, initializeBooksAction } from '../reducers/bookReducer';
 import bookService from '../services/books';
+import { useAuth } from '../contexts/AuthContext';
 
 export const BookContext = createContext();
 
@@ -11,14 +12,15 @@ const BookContextProvider = (props) => {
   const [books, dispatch] = useReducer(bookReducer, []);
 
   console.log('books', books);
+  const { loggedUser } = useAuth();
 
-  // runs once
   useEffect(() => {
-    bookService.getAll().then(data =>
-      dispatch(initializeBooksAction(data))
-    );
-  }, []);
-
+    if(loggedUser) {
+      bookService.getAllFromUser(loggedUser.uid).then(data =>
+        dispatch(initializeBooksAction(data))
+      );
+    }
+  }, [loggedUser]);
 
   return (
     <BookContext.Provider value={{ books, dispatch }}>

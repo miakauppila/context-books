@@ -6,12 +6,14 @@ import { useHistory, Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { NotificationContext } from '../contexts/NotificationContext';
 import { showAction, closeAction } from '../reducers/notificationReducer';
+import { useAuth } from '../contexts/AuthContext';
 
 const AddBookForm = () => {
 
   const { dispatch } = useContext(BookContext);
   const { dispatchNotification } = useContext(NotificationContext);
   const history = useHistory();
+  const { loggedUser } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ const AddBookForm = () => {
       title: e.target.title.value,
       author: e.target.author.value,
       notes: e.target.notes.value,
+      userUid: loggedUser.uid
     };
     bookService.create(newBook)
       .then((bookId) => {

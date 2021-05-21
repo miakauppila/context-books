@@ -4,9 +4,9 @@ import firebase from '../config/firebaseConfig';
 const db = firebase.firestore();
 
 //fetch data from firestore
-const getAll = async () => {
+const getAllFromUser = async (loggedUserUid) => {
   // db call gets a snapshot
-  const snapshot = await db.collection('books').get();
+  const snapshot = await db.collection('books').where('userUid', '==', loggedUserUid).get();
   // map and return an array
   return snapshot.docs.map((doc) => ({
     id: doc.id,
@@ -26,7 +26,7 @@ const deleteBook = (id) => {
 };
 
 export default {
-  getAll,
+  getAllFromUser,
   create,
   deleteBook
 };
