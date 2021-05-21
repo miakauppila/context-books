@@ -4,6 +4,7 @@ import { newBookAction } from '../reducers/bookReducer';
 import bookService from '../services/books';
 import { useHistory, Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import Notification from './Notification';
 import { NotificationContext } from '../contexts/NotificationContext';
 import { showAction, closeAction } from '../reducers/notificationReducer';
 import { useAuth } from '../contexts/AuthContext';
@@ -35,11 +36,17 @@ const AddBookForm = () => {
       })
       .catch((error) => {
         console.log('Error writing to database', error);
+        dispatchNotification(showAction('Sorry, adding the book failed', 'danger'));
+        setTimeout(() => {
+          dispatchNotification(closeAction());
+        }, 5000);
       });
   };
 
   return (
     <div className="container">
+      <h2 className="mb-2">Add new</h2>
+      <Notification />
       <Form id="add-book" onSubmit={handleSubmit}>
         <Form.Group controlId="title">
           <Form.Label>Book title:</Form.Label>

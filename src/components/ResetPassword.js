@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import React, { useState, useContext } from 'react';
+import { Form, Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { useHistory, Link } from 'react-router-dom';
+import Notification from './Notification';
+import { NotificationContext } from '../contexts/NotificationContext';
+import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const ResetPassword = () => {
-  const { resetPassword } = useAuth();
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const { resetPassword } = useAuth();
   const history = useHistory();
+  const { dispatchNotification } = useContext(NotificationContext);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const email = event.target.email.value;
 
     try {
-      setMessage('');
-      setError('');
       setLoading(true);
       await resetPassword(email);
-      setMessage('Check your email for further instructions.');
+      dispatchNotification(showAction('Check your email for further instructions.', 'success'));
       setTimeout(() => {
+        dispatchNotification(closeAction());
         history.push('/login');
       }, 10000);
     } catch(error) {
-      setError('Failed to reset password');
+      console.log(error);
+      dispatchNotification(showAction('Failed to reset password', 'danger'));
       setTimeout(() => {
-        setError('');
+        dispatchNotification(closeAction());
       }, 5000);
     }
     setLoading(false);
@@ -35,8 +38,7 @@ const ResetPassword = () => {
   return (
     <div className="container">
       <h2 className="mb-2">Password Reset</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      {message && <Alert variant="success">{message}</Alert>}
+      <Notification />
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="email">
           <Form.Label>Email</Form.Label>

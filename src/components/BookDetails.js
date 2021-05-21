@@ -3,9 +3,12 @@ import { BookContext } from '../contexts/BookContext';
 import bookService from '../services/books';
 import { removeBookAction } from '../reducers/bookReducer';
 import { Button } from 'react-bootstrap';
+import { NotificationContext } from '../contexts/NotificationContext';
+import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const BookDetails = ({ book }) => {
   const { dispatch } = useContext(BookContext);
+  const { dispatchNotification } = useContext(NotificationContext);
 
   const [showNotes, setShowNotes] = useState(false);
 
@@ -14,14 +17,22 @@ const BookDetails = ({ book }) => {
   const showWhenNotesVisible = { display: showNotes ? '' : 'none' };
 
   const removeHandler = (book) => {
-    if (window.confirm(`Do you want to remove the book ${book.title}?`)) {
+    if (window.confirm(`Do you want to remove the book '${book.title}'?`)) {
       bookService.deleteBook(book.id)
         .then(() => {
           console.log('Deleted document.');
           dispatch(removeBookAction(book.id));
+          dispatchNotification(showAction(`'${book.title}' removed`, 'success'));
+          setTimeout(() => {
+            dispatchNotification(closeAction());
+          }, 5000);
         })
         .catch((error) => {
           console.log('Error removing document:', error);
+          dispatchNotification(showAction('Sorry, removing the book failed', 'danger'));
+          setTimeout(() => {
+            dispatchNotification(closeAction());
+          }, 5000);
         });
 
     }

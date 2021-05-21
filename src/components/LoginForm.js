@@ -1,13 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { useHistory, Link } from 'react-router-dom';
+import Notification from './Notification';
 import { NotificationContext } from '../contexts/NotificationContext';
 import { showAction, closeAction } from '../reducers/notificationReducer';
 
 const LoginForm = () => {
   const { login } = useAuth();
-  const [error, setError] = useState('');
   // button will be disabled while authenticating
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -27,9 +27,9 @@ const LoginForm = () => {
       }, 5000);
     } catch (error) {
       console.log(error);
-      setError('Failed to log in.');
+      dispatchNotification(showAction('Failed to log in. Please check your credentials.', 'danger'));
       setTimeout(() => {
-        setError('');
+        dispatchNotification(closeAction());
       }, 5000);
       setLoading(false);
     }
@@ -38,7 +38,7 @@ const LoginForm = () => {
   return (
     <div className="container">
       <h2>Log in to application</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
+      <Notification />
       <Form id="login" onSubmit={handleLogin}>
         <Form.Group controlId="email">
           <Form.Label>Email:</Form.Label>
