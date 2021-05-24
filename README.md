@@ -1,10 +1,25 @@
 # My Reading List  
 
-This React Context *practice* project was started with help of the Net Ninja Tutorial video. Afterwards I added some additional features, NoSQL database and authentication.  
-- BookContext and bookReducer handle the application state of books
-- I have implemented Firebase Firestore database for storing and retrieving book data  
-- Firebase is also used for authentication with email and password
-- AuthContext handles Firebase authentication requests and loggedUser state
+This React Context *practice* project was started with the Net Ninja Tutorial video. Afterwards I added additional features, NoSQL database and authentication.  
+- I implemented Firebase Firestore database for storing and retrieving book data  
+- BookContext and bookReducer handle the application state of books  
+- Firebase is also used for authentication with email and password (AuthContext)  
+
+## This application is deployed to Firebase:
+https://react-book-list-369d2.web.app/
+
+You can create a new account or try the App with the following credentials:  
+Email: testuser@email.com  
+Password: Secret  
+
+## Technologies used in this project:
+- React.js
+- React Router
+- Firebase authentication
+- Firebase Firestore database  
+- Firebase hosting  
+- React Bootstrap + Bootstrap
+- ESLint
 
 ***
 
