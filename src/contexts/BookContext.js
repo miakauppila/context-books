@@ -11,7 +11,6 @@ const BookContextProvider = (props) => {
   // 1st param reducer, 2nd initial state (empty array)
   const [books, dispatch] = useReducer(bookReducer, []);
 
-  console.log('books', books);
   const { loggedUser } = useAuth();
 
   useEffect(() => {
